@@ -23,6 +23,11 @@ const actions = {
             .catch(() => {
                 commit('setWrongInfo', true);
             });
+    },
+
+    logOut({ commit }) {
+        commit('setLoginState', { loggedIn: false, token: null });
+        router.push('login');
     }
 };
 

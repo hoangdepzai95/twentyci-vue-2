@@ -1,9 +1,25 @@
 <template>
     <div id="app">
+        <app-header v-if="computedLoggedIn"></app-header>
         <router-view/>
     </div>
 </template>
+<script lang="ts">
+    import { Component, Vue } from 'vue-property-decorator';
+    import Header from './layouts/Header.vue';
 
+    @Component({
+        components: {
+            'app-header': Header
+        }
+    })
+    export default class App extends Vue {
+
+        get computedLoggedIn() {
+            return this.$store.state.auth.loggedIn;
+        }
+    }
+</script>
 <style lang="scss">
     @import "styles/styles";
 
