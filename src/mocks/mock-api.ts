@@ -20,11 +20,11 @@ class MockApi {
     public getPost(id: number): Promise<PostModel> {
         const posts = this.getLocalPosts();
 
-        return this.doRequest(posts.find(post => post.id === id) || {});
+        return this.doRequest(posts.find((post) => post.id === id) || {});
     }
 
     public deletePost(id: number): Promise<null> {
-        const posts = this.getLocalPosts().filter(post => post.id !== id);
+        const posts = this.getLocalPosts().filter((post) => post.id !== id);
 
         this.savePosts(posts);
 
@@ -69,8 +69,8 @@ class MockApi {
         }
     }
 
-    maxBy(arr: Array<any>, field: string) {
-        return arr.map(o => o[field]).reduce((a, b) => {
+    maxBy(arr: any[], field: string) {
+        return arr.map((o) => o[field]).reduce((a, b) => {
             return Math.max(a, b);
         });
     }

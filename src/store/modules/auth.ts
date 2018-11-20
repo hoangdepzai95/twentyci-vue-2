@@ -3,11 +3,11 @@ import router from '../../router';
 
 const TOKEN_KEY = 'access_token';
 
-const token = localStorage.getItem(TOKEN_KEY);
+const authToken = localStorage.getItem(TOKEN_KEY);
 
 const authState = {
-    loggedIn: !!token,
-    token: token,
+    loggedIn: !!authToken,
+    token: authToken,
     wrongInfo: false
 };
 

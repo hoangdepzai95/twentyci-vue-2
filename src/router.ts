@@ -36,17 +36,17 @@ const router =  new Router({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.auth) && !store.state.auth.loggedIn) {
+    if (to.matched.some((record) => record.meta.auth) && !store.state.auth.loggedIn) {
         next({
             path: '/login',
             query: { redirect: to.fullPath }
-        })
-    } else if (to.matched.some(record => record.path === '/login') && store.state.auth.loggedIn) {
+        });
+    } else if (to.matched.some((record) => record.path === '/login') && store.state.auth.loggedIn) {
         next({
             path: '/post-list',
-        })
+        });
     } else {
-        next()
+        next();
     }
 });
 

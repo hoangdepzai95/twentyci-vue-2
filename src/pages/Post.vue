@@ -1,6 +1,6 @@
 <template>
     <div class="post">
-        <div v-if="post">
+        <div v-if="post.id">
             <h2>{{ post.title }}</h2>
             <div class="content">{{ post.content }}</div>
         </div>
@@ -15,7 +15,7 @@
     @Component
     export default class Post extends Vue {
 
-        post: PostModel = null;
+        post: PostModel = {} as PostModel;
 
         mounted() {
             const postId = +this.$router.currentRoute.params['id'];

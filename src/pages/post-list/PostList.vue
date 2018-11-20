@@ -50,7 +50,7 @@
 
         showEditForm = false;
 
-        currentPost: PostModel = null;
+        currentPost: PostModel = {} as PostModel;
 
         mounted() {
             this.getPosts();

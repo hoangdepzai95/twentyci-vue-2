@@ -34,7 +34,7 @@ export default class Input extends Vue {
 
     hasError = false;
 
-    value = null;
+    value = '';
 
     $parent: Form;
 

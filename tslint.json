@@ -24,6 +24,7 @@
         "no-consecutive-blank-lines": false,
         "trailing-comma": false,
         "member-access": false,
+        "no-string-literal": false,
         "semicolon": [
             true,
             "always",

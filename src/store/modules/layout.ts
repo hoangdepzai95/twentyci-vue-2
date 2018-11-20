@@ -14,4 +14,4 @@ export default  {
     namespaced: true,
     state: layoutState,
     mutations
-}
+};

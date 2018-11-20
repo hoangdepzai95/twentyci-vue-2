@@ -1,4 +1,4 @@
-export default function (value: string): string {
+export default function(value: string): string {
     const validValue = value || '';
 
     const maxLength = 100;
