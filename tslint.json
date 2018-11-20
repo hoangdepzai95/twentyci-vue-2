@@ -23,10 +23,19 @@
         "object-literal-sort-keys": false,
         "no-consecutive-blank-lines": false,
         "trailing-comma": false,
+        "member-access": false,
         "semicolon": [
             true,
             "always",
             "ignore-interfaces"
+        ],
+        "no-console": [
+            true,
+            "debug",
+            "info",
+            "time",
+            "timeEnd",
+            "trace"
         ]
 }
 }
