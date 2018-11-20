@@ -1,7 +1,7 @@
 <template>
     <div class="form-item" :class="{ 'has-error': hasError }">
-        <input :type="type" v-input :name="name" @input="onChange" v-if="type !== 'text-area'" :placeholder="placeHolder"/>
-        <textarea v-input :name="name" @input="onChange" v-if="type === 'text-area'" :placeholder="placeHolder"/>
+        <input v-model="value" :type="type" v-input :name="name" @input="onChange" v-if="type !== 'text-area'" :placeholder="placeHolder"/>
+        <textarea v-model="value" v-input :name="name" @input="onChange" v-if="type === 'text-area'" :placeholder="placeHolder"/>
         <p class="text-danger">{{ errText }}</p>
         <slot></slot>
     </div>
@@ -29,6 +29,9 @@ export default class Input extends Vue {
     @Prop()
     placeHolder: string;
 
+    @Prop()
+    defaultValue: string;
+
     hasError = false;
 
     value = null;
@@ -38,6 +41,8 @@ export default class Input extends Vue {
 
     beforeMount() {
         this.$parent.registerInput(this);
+        this.value = this.defaultValue;
+        this.$parent.onChange(this.name, this.value);
     }
 
     onChange($event: any) {
@@ -77,6 +82,10 @@ export default class Input extends Vue {
             }
         }
 
+    }
+
+    textarea {
+        min-height: 250px;
     }
 
 </style>

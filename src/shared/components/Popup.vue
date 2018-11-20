@@ -1,0 +1,54 @@
+<template>
+    <div class="popup-container" v-if="value">
+        <div class="popup-wrapper">
+            <slot></slot>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+    import { Component, Prop, Vue } from 'vue-property-decorator';
+
+    @Component
+    export default class Popup extends Vue {
+
+        @Prop()
+        value: boolean;
+
+        close() {
+            this.$emit('input', false);
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+    .popup-container {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 99999999;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,0.3);
+        overflow: auto;
+        text-align: center;
+        padding: 20px 0;
+        will-change: opacity;
+        &:after {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }
+    }
+
+    .popup-wrapper {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 auto;
+        text-align: left;
+        width: 95%;
+        max-width: 800px;
+    }
+
+</style>

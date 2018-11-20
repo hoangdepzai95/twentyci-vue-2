@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <app-loading v-if="computedLoading"></app-loading>
         <app-header v-if="computedLoggedIn"></app-header>
         <router-view/>
     </div>
@@ -15,8 +16,12 @@
     })
     export default class App extends Vue {
 
-        get computedLoggedIn() {
+        get computedLoggedIn(): boolean {
             return this.$store.state.auth.loggedIn;
+        }
+
+        get computedLoading(): boolean {
+            return this.$store.state.layout.loading;
         }
     }
 </script>

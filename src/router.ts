@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Login from './pages/Login.vue';
-import PostList from './pages/PostList.vue';
+import PostList from './pages/post-list/PostList.vue';
 import Post from './pages/Post.vue';
 import store from './store/index';
 
@@ -18,7 +18,7 @@ const router =  new Router({
             meta: { auth: true }
         },
         {
-            path: '/post',
+            path: '/post/:id',
             name: 'post',
             component: Post,
             meta: { auth: true }

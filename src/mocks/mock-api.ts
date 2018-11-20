@@ -1,5 +1,6 @@
 // tslint:disable:max-line-length
-import { PostModel } from '@/models/post.model';
+import { PostModel } from '@/shared/models/post.model';
+import store from '../store/index';
 
 const DELAY = 200;
 const DB_KEY = 'mock-db';
@@ -16,12 +17,66 @@ class MockApi {
         return this.doRequest(this.getLocalPosts());
     }
 
+    public getPost(id: number): Promise<PostModel> {
+        const posts = this.getLocalPosts();
+
+        return this.doRequest(posts.find(post => post.id === id) || {});
+    }
+
+    public deletePost(id: number): Promise<null> {
+        const posts = this.getLocalPosts().filter(post => post.id !== id);
+
+        this.savePosts(posts);
+
+        return this.doRequest(null);
+    }
+
+    public editPost(id: number, title: string, content: string): Promise<null> {
+        const posts = this.getLocalPosts();
+
+        posts.forEach((post) => {
+            if (post.id === id) {
+                post.title = title;
+                post.content = content;
+            }
+        });
+
+        this.savePosts(posts);
+
+        return this.doRequest(null);
+    }
+
+    public createPost(title: string, content: string): Promise<null> {
+        const posts = this.getLocalPosts();
+
+        const id = this.maxBy(posts, 'id') + 1;
+        posts.unshift({
+            id,
+            title,
+            content
+        });
+
+        this.savePosts(posts);
+        return this.doRequest(null);
+
+    }
+
     public login(userName: string, password: string): Promise<any> {
         if (userName === 'demo' && password === 'demo') {
             return this.doRequest({ token: 'token' });
         } else {
             return this.doRequest({ wrongInfo: true }, true);
         }
+    }
+
+    maxBy(arr: Array<any>, field: string) {
+        return arr.map(o => o[field]).reduce((a, b) => {
+            return Math.max(a, b);
+        });
+    }
+
+    private savePosts(posts: PostModel[]) {
+        localStorage.setItem(DB_KEY, JSON.stringify(posts));
     }
 
     private initData() {
@@ -46,11 +101,14 @@ class MockApi {
 
     private doRequest(res: any, err = false): Promise<any> {
         return new Promise( (resolve, reject) => {
+            store.commit('layout/setLoading', true);
             setTimeout(() => {
                 if (err) {
                     reject(res);
+                    store.commit('layout/setLoading', false);
                 } else {
                     resolve(res);
+                    store.commit('layout/setLoading', false);
                 }
             }, DELAY);
         });

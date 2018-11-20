@@ -2,7 +2,10 @@
     <div class="post-list">
         <div class="posts">
             <div class="tools">
-                <button v-button="'primary'">Create post</button>
+                <button v-button="'primary'" @click="openCreateForm">Create post</button>
+                <app-popup v-model="showCreateForm">
+                    <post-form mode="create" :post="currentPost"></post-form>
+                </app-popup>
             </div>
             <table>
                 <thead>
@@ -17,7 +20,10 @@
                     <td><router-link :to="'/post/' + post.id">{{ post.title | cutLongText }}</router-link></td>
                     <td>{{ post.content | cutLongText  }}</td>
                     <td>
-                        <a >Edit</a> | <a >Delete</a>
+                        <a @click="openEditForm(post)">Edit</a> | <a @click="deletePost(post.id)">Delete</a>
+                        <app-popup v-model="showEditForm">
+                            <post-form mode="edit" :post="currentPost"></post-form>
+                        </app-popup>
                     </td>
                 </tr>
                 </tbody>
@@ -28,18 +34,52 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    import { PostModel } from '../models/post.model';
-    import api from  '../mocks/mock-api';
+    import { PostModel } from '../../shared/models/post.model';
+    import PostForm from './PostForm.vue';
+    import api from '../../mocks/mock-api';
 
-    @Component
+    @Component({
+        components: {
+            'post-form': PostForm
+        }
+    })
     export default class PostList extends Vue {
         posts: PostModel[] = [];
 
+        showCreateForm = false;
+
+        showEditForm = false;
+
+        currentPost: PostModel = null;
+
         mounted() {
+            this.getPosts();
+        }
+
+        getPosts() {
             api.getPosts()
                 .then((posts) => {
                     this.posts = posts;
                 });
+        }
+
+        deletePost(id: number) {
+            if (confirm('Do you want to delete this post?')) {
+                api.deletePost(id)
+                    .then(() => {
+                        this.getPosts();
+                    });
+            }
+        }
+
+        openEditForm(post) {
+            this.currentPost = post;
+            this.showEditForm = true;
+        }
+
+        openCreateForm() {
+            this.currentPost = {} as PostModel;
+            this.showCreateForm = true;
         }
     }
 </script>

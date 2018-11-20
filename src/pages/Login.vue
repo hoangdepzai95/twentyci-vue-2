@@ -16,7 +16,7 @@
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
     import { Validators } from '../util';
-    import Form from '../components/Form.vue';
+    import Form from '../shared/components/Form.vue';
 
     @Component
     export default class Login extends Vue {
@@ -33,7 +33,7 @@
         submit() {
             const form: Form = this.$refs.form as Form;
 
-            if (form) {
+            if (form.validate()) {
                 const formData: any = form.getFormData();
 
                 this.$store.dispatch('auth/login', {...formData, redirect: this.$router.currentRoute.query['redirect']});
