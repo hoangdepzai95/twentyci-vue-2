@@ -1,5 +1,3 @@
-
-
 export const Validators = {
     minLength(minLength: number): any {
         return (value: string): boolean => {

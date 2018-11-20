@@ -1,5 +1,5 @@
 <template>
-
+<h1>this is post</h1>
 </template>
 
 <script lang="ts">

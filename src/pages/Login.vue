@@ -7,7 +7,7 @@
                 <form-input type="password" place-holder="password" name="password" err-text="Please enter password" :validators="validators.password">
                 </form-input>
                 <button v-button="'primary'" class="login-btn">Login</button>
-                <p class="text-danger" :class="{ hide: !wrongInfo }">Invalid user name or password</p>
+                <p class="text-danger" :class="{ hide: !computedWrongInfo }">Invalid user name or password</p>
             </app-form>
         </div>
     </div>
@@ -17,7 +17,6 @@
     import { Component, Vue } from 'vue-property-decorator';
     import { Validators } from '../util';
     import Form from '../components/Form.vue';
-    import api from '../mocks/mock-api';
 
     @Component
     export default class Login extends Vue {
@@ -27,22 +26,17 @@
             password: [Validators.required]
         };
 
-        wrongInfo = false;
+        get computedWrongInfo() {
+            return this.$store.state.auth.wrongInfo;
+        }
 
         submit() {
             const form: Form = this.$refs.form as Form;
 
             if (form) {
                 const formData: any = form.getFormData();
-                this.wrongInfo = false;
-                api.login(formData.userName, formData.password)
-                    .then((res: any) => {
-                        console.log('res', res);
 
-                    })
-                    .catch(() => {
-                        this.wrongInfo = true;
-                    });
+                this.$store.dispatch('auth/login', {...formData, redirect: this.$router.currentRoute.query['redirect']});
             }
 
         }
